@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "143638074306",
+    "firebase_url": "https://giant-buddy.firebaseio.com",
+    "project_id": "giant-buddy",
+    "storage_bucket": "giant-buddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143638074306:android:0f2243f74cf98489",
+        "android_client_info": {
+          "package_name": "com.android.giantbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143638074306-au237iepi28ca2he7bok9gvs2ukqofj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.giantbuddy",
+            "certificate_hash": "2a6195bb7615128fe45374931ab50564d0adbe01"
+          }
+        },
+        {
+          "client_id": "143638074306-n5ljk2pibtfe8pc0esmj75j6aafrpotf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRvVRv4QvqEhQqwoBMjfoQDs-46nwN90g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143638074306-n5ljk2pibtfe8pc0esmj75j6aafrpotf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
