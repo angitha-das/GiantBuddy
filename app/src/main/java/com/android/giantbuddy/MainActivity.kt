@@ -5,10 +5,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -66,15 +68,15 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     }
 
-    private fun faceDetect(image: Bitmap) {
-        val firebaseImage = FirebaseVisionImage.fromBitmap(image)
+    private fun faceDetect(image: Uri) {
+        val firebaseImage = FirebaseVisionImage.fromFilePath(this,image)
 
         val firebaseOptions = FirebaseVisionFaceDetectorOptions.Builder()
             .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
             .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
             .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-            .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
-            .setMinFaceSize(0.15f)
+//            .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
+//            .setMinFaceSize(0.15f)
             .enableTracking()
             .build()
 
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
                 processFaces(it)
             }.addOnFailureListener {
                 it.printStackTrace()
-                Toast.makeText(this, "Something bad happended. Cry in a corner.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Something bad happened. Cry in a corner.", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -97,9 +99,9 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
                 if (face.smilingProbability != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
                     val smileProb = face.smilingProbability
                     if (smileProb > 0.5) {
-                        Toast.makeText(this, "Smily face :)", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Smiley face :)", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Not a Smily face :(", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Not a Smiley face :(", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(this, "Is there a face here?", Toast.LENGTH_SHORT).show()
@@ -158,6 +160,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
                     override fun onImageSaved(file: File) {
                         val msg = "Photo capture succeeded: ${file.absolutePath}"
+                        faceDetect(Uri.fromFile(file.absoluteFile))
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         Log.d("CameraXApp", msg)
                     }
