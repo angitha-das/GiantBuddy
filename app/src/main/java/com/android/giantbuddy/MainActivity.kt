@@ -31,6 +31,7 @@ import androidx.camera.core.PreviewConfig.Builder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     private fun faceDetect(image: Uri) {
+        Log.d("Log:","face detect")
         val firebaseImage = FirebaseVisionImage.fromFilePath(this,image)
 
         val firebaseOptions = FirebaseVisionFaceDetectorOptions.Builder()
@@ -82,26 +84,41 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
         val detector = FirebaseVision.getInstance().getVisionFaceDetector(firebaseOptions)
 
-        detector.detectInImage(firebaseImage)
-            .addOnSuccessListener {
-                processFaces(it)
-            }.addOnFailureListener {
-                it.printStackTrace()
+        val result = detector.detectInImage(firebaseImage)
+            .addOnSuccessListener { faces ->
+                processFaces(faces)
+                Toast.makeText(this, "Process Image detected", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {    it.printStackTrace()
                 Toast.makeText(this, "Something bad happened. Cry in a corner.", Toast.LENGTH_SHORT).show()
             }
+
     }
 
     private fun processFaces(faces: List<FirebaseVisionFace>) {
+        Log.d("Log:","process faces")
         if (faces.isEmpty()) {
             Toast.makeText(this, "Is there a face here?", Toast.LENGTH_SHORT).show()
         } else {
             for (face in faces) {
                 if (face.smilingProbability != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
                     val smileProb = face.smilingProbability
+                    val leftEyeOpenProb = face.leftEyeOpenProbability
+                    val rightEyeOpenProb = face.rightEyeOpenProbability
+                    if(leftEyeOpenProb > 0.5) {
+                        Toast.makeText(this, "Smiley face left eye open :)", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(this, "Smiley face left eye closed :)", Toast.LENGTH_LONG).show()
+                    }
+                    if(rightEyeOpenProb > 0.5){
+                        Toast.makeText(this, "Smiley face right eye open :)", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(this, "Smiley face right eye closed :)", Toast.LENGTH_LONG).show()
+                    }
                     if (smileProb > 0.5) {
-                        Toast.makeText(this, "Smiley face :)", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Smiley face :)", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(this, "Not a Smiley face :(", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Not a Smiley face :(", Toast.LENGTH_LONG).show()
                     }
                 } else {
                     Toast.makeText(this, "Is there a face here?", Toast.LENGTH_SHORT).show()
