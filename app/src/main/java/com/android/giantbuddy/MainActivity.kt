@@ -106,14 +106,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
                     val leftEyeOpenProb = face.leftEyeOpenProbability
                     val rightEyeOpenProb = face.rightEyeOpenProbability
                     if(leftEyeOpenProb > 0.5) {
-                        Toast.makeText(this, "Smiley face left eye open :)", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Left eye open :)", Toast.LENGTH_LONG).show()
                     }else{
-                        Toast.makeText(this, "Smiley face left eye closed :)", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Left eye closed ;)", Toast.LENGTH_LONG).show()
                     }
                     if(rightEyeOpenProb > 0.5){
-                        Toast.makeText(this, "Smiley face right eye open :)", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Right eye open :)", Toast.LENGTH_LONG).show()
                     }else{
-                        Toast.makeText(this, "Smiley face right eye closed :)", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Right eye closed :)", Toast.LENGTH_LONG).show()
                     }
                     if (smileProb > 0.5) {
                         Toast.makeText(this, "Smiley face :)", Toast.LENGTH_LONG).show()
@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetAspectRatio(Rational(1, 1))
             setTargetResolution(Size(640, 640))
+//            setLensFacing(CameraX.LensFacing.FRONT)
         }.build()
 
         // Build the viewfinder use case
